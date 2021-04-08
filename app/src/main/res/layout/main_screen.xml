@@ -4,4 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".lockscreen.lock_Activity"/>
+    tools:context=".lock_Activity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="84dp"
+        tools:layout_editor_absoluteY="325dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:srcCompat="@color/purple_200" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/moveChat"
+                android:layout_width="362dp"
+                android:layout_height="64dp"
+                android:gravity="center"
+                android:text="저는 채팅으로 도움받고 싶어요"
+                android:textStyle="bold"
+                app:backgroundTint="#4359E7" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
