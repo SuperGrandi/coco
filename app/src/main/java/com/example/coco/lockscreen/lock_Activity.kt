@@ -1,5 +1,8 @@
 package com.example.coco.lockscreen
 
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.coco.R
@@ -10,6 +13,23 @@ import kotlinx.android.synthetic.main.lock_screen.*
 import java.util.*
 
 public class lock_Activity : AppCompatActivity() {
+
+    companion object {
+        fun newIntent(context: Context?) : Intent {
+            return Intent(context, lock_Activity::class.java)
+            .apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+            }
+        }
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (hasFocus) window.decorView.systemUiVisibility
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.lock_screen)

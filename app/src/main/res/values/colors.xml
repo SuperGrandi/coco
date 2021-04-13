@@ -7,4 +7,14 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="whiteColor">#ffffff</color>
+    <color name="lockscreenBackground">#ffffff</color>
+    <color name="lockscreenForground">#40000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="emergency">#FF5D50</color>
+    <color name="emergencyRed">#FF564A</color>
+    <color name="red">#FF1100</color>
 </resources>
