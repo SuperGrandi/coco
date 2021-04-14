@@ -78,3 +78,9 @@
 .gradle/6.5/javaCompile/jarAnalysis.bin
 .gradle/6.5/javaCompile/javaCompile.lock
 .gradle/6.5/javaCompile/taskHistory.bin
+.idea/libraries/Gradle__androidx_asynclayoutinflater_asynclayoutinflater_1_0_0_aar.xml
+.idea/libraries/Gradle__androidx_legacy_legacy_support_core_ui_1_0_0_aar.xml
+.idea/libraries/Gradle__androidx_legacy_legacy_support_v4_1_0_0_aar.xml
+.idea/libraries/Gradle__androidx_media_media_1_0_0_aar.xml
+.idea/libraries/Gradle__androidx_slidingpanelayout_slidingpanelayout_1_0_0_aar.xml
+.idea/libraries/Gradle__androidx_swiperefreshlayout_swiperefreshlayout_1_0_0_aar.xml
