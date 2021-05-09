@@ -1,3 +1,3 @@
 package com.example.coco
 
-data class ListViewItem(val content: String, val type: String)
+data class ListViewItem(val content: String, val type: String, val timestamp: String)

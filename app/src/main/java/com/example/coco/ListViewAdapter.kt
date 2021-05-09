@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.ListAdapter
-import android.widget.ListView
 import android.widget.TextView
 
 class ListViewAdapter(private val items: MutableList<ListViewItem>): BaseAdapter(), ListAdapter {
@@ -14,12 +14,28 @@ class ListViewAdapter(private val items: MutableList<ListViewItem>): BaseAdapter
     override fun getItemId(position: Int): Long = position.toLong()
     override fun getView(position: Int, view: View?, parent: ViewGroup?): View? {
         var convertView = view
-
-        if (convertView == null) convertView = LayoutInflater.from(parent?.context).inflate(R.layout.chat_item, parent, false)
-
+        var chat_content = view;
+        var chat_timestamp = view;
         val item: ListViewItem = items[position]
-        val chat_content = convertView!!.findViewById<TextView>(R.id.chat_content)
-        chat_content.text = item.content + " - "+item.type
+
+        if (item.type == "user") {
+            convertView = LayoutInflater.from(parent?.context).inflate(R.layout.user_chat_item, parent, false)
+            chat_content = convertView!!.findViewById<TextView>(R.id.user_chat_content)
+            chat_timestamp = convertView!!.findViewById<TextView>(R.id.user_chat_timestamp)
+        } else {
+            convertView = LayoutInflater.from(parent?.context).inflate(R.layout.coco_chat_item, parent, false)
+            chat_content = convertView!!.findViewById<TextView>(R.id.coco_chat_content)
+            chat_timestamp = convertView!!.findViewById<TextView>(R.id.coco_chat_timestamp)
+
+            var call_btn = convertView!!.findViewById<Button>(R.id.call_button)
+
+            if (item.content.length < 25) {
+                call_btn.setVisibility(View.GONE)
+            }
+        }
+
+        chat_content.text = item.content
+        chat_timestamp.text = item.timestamp
 
         return convertView
     }
