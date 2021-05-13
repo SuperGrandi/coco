@@ -3,10 +3,7 @@ package com.example.coco
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.Button
-import android.widget.ListAdapter
-import android.widget.TextView
+import android.widget.*
 
 class ListViewAdapter(private val items: MutableList<ListViewItem>): BaseAdapter(), ListAdapter {
     override fun getCount(): Int = items.size
@@ -34,8 +31,9 @@ class ListViewAdapter(private val items: MutableList<ListViewItem>): BaseAdapter
                 call_btn.setVisibility(View.GONE)
             }
 
-            if (item.content.indexOf("지도") !== -1) {
-                TODO("지도 호출하기")
+            if (item.content.indexOf("지도") == -1) {
+                var map_img = convertView!!.findViewById<ImageView>(R.id.map_image)
+                map_img.setVisibility(View.GONE)
             }
         }
 
