@@ -1,10 +1,12 @@
 package com.example.coco
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ListView
+import com.example.coco.lockscreen.service.ScreenService
 
 class ChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,5 +34,9 @@ class ChatActivity : AppCompatActivity() {
             adapter = ListViewAdapter(items)
             listView.adapter = adapter
         }
+
+        val intent = Intent(applicationContext, ScreenService::class.java)
+        startService(intent)
+
     }
 }
