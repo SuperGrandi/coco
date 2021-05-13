@@ -10,7 +10,7 @@ import android.os.IBinder
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import androidx.core.app.NotificationCompat
-import com.example.coco.lockscreen.lock_Activity
+import com.example.coco.lock_Activity
 import com.example.coco.lockscreen.receiver.LockScreenApplication
 
 class LockScreenService : Service(){

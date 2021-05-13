@@ -10,6 +10,7 @@
 .gradle/6.5/fileHashes/fileHashes.bin
 .gradle/buildOutputCleanup/outputFiles.bin
 .gradle/vcs-1/gc.properties
+.idea/*
 .idea/.name
 .idea/jarRepositories.xml
 .idea/caches/build_file_checksums.ser
@@ -84,3 +85,10 @@
 .idea/libraries/Gradle__androidx_media_media_1_0_0_aar.xml
 .idea/libraries/Gradle__androidx_slidingpanelayout_slidingpanelayout_1_0_0_aar.xml
 .idea/libraries/Gradle__androidx_swiperefreshlayout_swiperefreshlayout_1_0_0_aar.xml
+.idea/libraries/Gradle__com_google_android_gms_play_services_tasks_17_2_0_aar.xml
+.idea/libraries/Gradle__com_google_android_gms_play_services_places_placereport_17_0_0_aar.xml
+.idea/libraries/Gradle__com_google_android_gms_play_services_maps_17_0_0_aar.xml
+.idea/libraries/Gradle__com_google_android_gms_play_services_location_18_0_0_aar.xml
+.idea/libraries/Gradle__com_google_android_gms_play_services_basement_17_5_0_aar.xml
+.idea/libraries/Gradle__com_google_android_gms_play_services_base_17_5_0_aar.xml
+.idea/libraries/Gradle__androidx_databinding_viewbinding_4_1_3_aar.xml

@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
@@ -15,7 +16,6 @@ import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.time.LocalDateTime
@@ -111,5 +111,6 @@ class ChatActivity : AppCompatActivity() {
                 arrayOf(Manifest.permission.RECORD_AUDIO), 0
             )
         }
+
     }
 }

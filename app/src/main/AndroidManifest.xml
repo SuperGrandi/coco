@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.coco"
-    >
+    package="com.example.coco">
+
+    <uses-permission android:name="app.cap.ajm.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permissions.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.BODY_SENSORS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -10,18 +24,42 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Coco">
-        <activity android:name=".main_Activity">
+
+        <!--<activity android:name=".lock_Activity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChatActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
-        <activity android:name=".lockscreen.lock_Activity">
-
+        <activity
+            android:name=".ChatActivity"/>-->
+        <activity android:name=".main_Activity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+        <activity android:name=".ChatActivity"/>
+        <activity
+            android:name=".lock_Activity"/>
+        <activity
+            android:name=".DialogActivity"
+            android:theme="@style/Base.Theme.AppCompat.Dialog"
+            android:launchMode="singleTask"/>
+        <service
+            android:name="MyNavigationService"
+            android:foregroundServiceType="location" />
+        <service
+            android:name=".lockscreen.service.SensorService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name=".lockscreen.service.ScreenService"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
