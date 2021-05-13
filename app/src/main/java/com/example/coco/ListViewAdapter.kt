@@ -29,8 +29,13 @@ class ListViewAdapter(private val items: MutableList<ListViewItem>): BaseAdapter
 
             var call_btn = convertView!!.findViewById<Button>(R.id.call_button)
 
+            // 전화하기 버튼 출력
             if (item.content.length < 25) {
                 call_btn.setVisibility(View.GONE)
+            }
+
+            if (item.content.indexOf("지도") !== -1) {
+                TODO("지도 호출하기")
             }
         }
 
