@@ -42,43 +42,57 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginStart="3dp"
-                android:layout_marginLeft="3dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:text="긴급문자를 발송할 번호를 찾아주세요."
                 android:textSize="15dp"/>
             <Button
                 android:id="@+id/btnAdd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="연락처 추가"/>
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#4359E7"
+                android:textColor="@color/white"
+                android:text="연락처 추가"
+                android:textSize="20dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginStart="3dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:text="전체 연락처를 삭제합니다."/>
             <Button
                 android:id="@+id/btnDelete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="연락처 삭제"/>
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#4359E7"
+                android:textColor="@color/white"
+                android:text="연락처 삭제"
+                android:textSize="20dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="3dp"
-                android:layout_marginLeft="3dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:text="긴급문자를 발송할 연락처 목록"
                 android:textSize="15dp"/>
             <ListView
                 android:id="@+id/lvPhoneNum"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="3dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginEnd="3dp"
-                android:layout_marginRight="3dp"/>
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"/>
         </LinearLayout>
 
     </com.google.android.material.navigation.NavigationView>
