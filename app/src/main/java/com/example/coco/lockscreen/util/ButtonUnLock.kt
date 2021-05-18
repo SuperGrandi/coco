@@ -1,8 +1,10 @@
 package com.example.coco.lockscreen.util
 
+import android.Manifest.permission
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
 import android.telephony.SmsManager
 import android.util.AttributeSet
 import android.util.Log
@@ -14,9 +16,11 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.example.coco.R
 import com.example.coco.lockscreen.service.GpsTracker
 import kotlinx.android.synthetic.main.view_unlock.view.*
+import java.util.*
 
 class ButtonUnLock : RelativeLayout {
 
@@ -29,8 +33,9 @@ class ButtonUnLock : RelativeLayout {
     private var initialSliderPosition = 0
     private var initialSlidingX = 0f
 
-    var phoneNum = "01072736600"
+    var phoneNum = ""
     var textMsg: String? = null
+    var prevNum = ""
 
     constructor(context: Context) : super(context) {
         init(context, null)
@@ -127,16 +132,41 @@ class ButtonUnLock : RelativeLayout {
                     val latitude = gpsTracker.latitude
                     val longitude = gpsTracker.longitude
 
-                    textMsg = "사고 발생: " + "http://maps.google.com/?q=" + latitude.toString() + "," + longitude.toString()
-                    try {
-                        val sms = SmsManager.getDefault()
-                        sms.sendTextMessage(phoneNum, null, textMsg, null, null)
-                        Toast.makeText(context, "전송완료", Toast.LENGTH_LONG).show()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                    Log.d("Message", "$textMsg<$phoneNum>")
+                    val smsdBhelper = SMSDBhelper(context);
+                    smsdBhelper.open()
 
+                    var itemIds: MutableList<String> = ArrayList()
+                    val cursor = smsdBhelper.allContacts
+
+                    cursor.moveToFirst()
+
+                    if (cursor.moveToFirst()) {
+                        do {
+                            val data = cursor.getString(cursor.getColumnIndex("contact"))
+                            itemIds.add(data)
+                        } while (cursor.moveToNext())
+                    }
+                    cursor.close()
+
+                    var it: Iterator<String> = itemIds.iterator()
+
+                    while (it.hasNext()) {
+                        phoneNum = it.next()
+                        phoneNum = phoneNum.substring(phoneNum.lastIndexOf(":") + 2)
+                        textMsg = "사고 발생: " + "http://maps.google.com/?q=" + latitude.toString() + "," + longitude.toString()
+
+                        try {
+                            val sms = SmsManager.getDefault()
+                            sms.sendTextMessage(phoneNum, null, textMsg, null, null)
+                            Toast.makeText(context, "전송완료", Toast.LENGTH_LONG).show()
+                        } catch (e: java.lang.Exception) {
+                            e.printStackTrace()
+                        }
+
+                        Log.d("Message", "$textMsg<$phoneNum>")
+                        prevNum = phoneNum
+                    }
+                    smsdBhelper.close()
                     sliding = false
                     sliderPosition = 220
                     reset()
