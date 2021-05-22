@@ -136,12 +136,6 @@ class lock_Activity : AppCompatActivity() {
         }
 
         gpsTracker = GpsTracker(this@lock_Activity)
-
-        var intent = Intent(applicationContext, SensorService::class.java)
-        startService(intent)
-
-        intent = Intent(applicationContext, ScreenService::class.java)
-        startService(intent)
     }
 
     override fun onResume() {
