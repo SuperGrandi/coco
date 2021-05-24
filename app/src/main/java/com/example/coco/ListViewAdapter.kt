@@ -1,5 +1,6 @@
 package com.example.coco
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat.startActivity
+import com.squareup.picasso.Picasso
 
 
 class ListViewAdapter(val context: Context, private val items: MutableList<ListViewItem>): BaseAdapter(), ListAdapter {
@@ -47,6 +49,11 @@ class ListViewAdapter(val context: Context, private val items: MutableList<ListV
 
             // 지도 출력
             if (item.lat != null && item.lng != null) {
+                // 지도 이미지 출력
+                val imgUrl = "https://maps.googleapis.com/maps/api/staticmap?center="+item.lat+","+item.lng+"&zoom=16&scale=1&size=600x300&maptype=roadmap&key=AIzaSyBbKJZdXNaZF9QddLZzwtnIZ9_7DDOhDkI&format=png&visual_refresh=true"
+
+                Picasso.get().load(imgUrl).into(map_img)
+
                 map_img.setOnClickListener {
                     val mapIntentUri = Uri.parse("google.navigation:q=" + item.lat + "," + item.lng)
                     val mapIntent = Intent(Intent.ACTION_VIEW, mapIntentUri)
