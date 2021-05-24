@@ -4,5 +4,6 @@ data class MessageData(
         val message: String,
         val lat: String? = null,
         val lng: String? = null,
-        val tel: String? = null
+        val tel: String? = null,
+        val hospital_info: HospitalData? = null
 )

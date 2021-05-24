@@ -1,7 +1,6 @@
 package com.example.coco
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -10,20 +9,15 @@ import android.location.Address
 import android.location.Geocoder
 import android.location.LocationManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Message
 import android.provider.Settings
-import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
-import android.speech.SpeechRecognizer
 import android.speech.tts.TextToSpeech
 import android.util.Log
-import android.view.LayoutInflater
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.coco.lockscreen.service.GpsTracker
@@ -32,16 +26,19 @@ import com.example.coco.lockscreen.service.SensorService
 import com.example.coco.lockscreen.setting_Activity
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
+import kotlinx.coroutines.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+import retrofit2.Retrofit
+import java.io.IOException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-import retrofit2.Retrofit;
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONObject
+import java.util.concurrent.TimeUnit
 import kotlin.coroutines.*
-import kotlinx.coroutines.*
-import java.io.IOException
+
 
 class ChatActivity : AppCompatActivity() {
     // 채팅 관련 변수
@@ -52,10 +49,10 @@ class ChatActivity : AppCompatActivity() {
     //permission
     private val PERMISSIONS_REQUEST_CODE = 100
     private var REQUIRED_PERMISSIONS = arrayOf(
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION,
-        Manifest.permission.SEND_SMS,
-        Manifest.permission.RECORD_AUDIO
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.RECORD_AUDIO
     )
     private var gpsTracker: GpsTracker? = null
     private val GPS_ENABLE_REQUEST_CODE = 2001
@@ -82,7 +79,7 @@ class ChatActivity : AppCompatActivity() {
         intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR")
-        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,5)
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5)
 
         // TTS 생성
         initTextToSpeech()
@@ -102,7 +99,7 @@ class ChatActivity : AppCompatActivity() {
 
         items.add(ListViewItem("배가 아파", "user", "10:00"))
         items.add(ListViewItem("답변", "coco", "10:01"))
-        items.add(ListViewItem("응답", "user", "10:10"))
+        items.add(ListViewItem("응답", "coco", "10:10", "37.55634362962125", "125.07976165234159"))
 
         adapter = ListViewAdapter(this, items)
         listView.adapter = adapter
@@ -139,7 +136,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun addMessage(datas:Array<String?>, type:String, context: Context) {
+    private fun addMessage(datas: Array<String?>, type: String, context: Context) {
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("HH:mm")
         val formatted = current.format(formatter)
@@ -212,12 +209,12 @@ class ChatActivity : AppCompatActivity() {
     // 마이크 권한 요청하기
     private fun requestPermission() {
         if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.RECORD_AUDIO
-            ) != PackageManager.PERMISSION_GRANTED) {
+                        this,
+                        Manifest.permission.RECORD_AUDIO
+                ) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.RECORD_AUDIO), 0
+                    this,
+                    arrayOf(Manifest.permission.RECORD_AUDIO), 0
             )
         }
 
@@ -231,7 +228,7 @@ class ChatActivity : AppCompatActivity() {
         }
 
         tts = TextToSpeech(this) {
-            Toast.makeText(this, "Result : "+it.toString(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Result : " + it.toString(), Toast.LENGTH_SHORT).show()
             if (it == TextToSpeech.SUCCESS) {
                 val result = tts?.setLanguage(Locale.KOREAN)
                 if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
@@ -257,9 +254,16 @@ class ChatActivity : AppCompatActivity() {
     // 메세지 전송
     private suspend fun sendMessage(message: String): Array<String?> {
 
+        val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(15, TimeUnit.SECONDS)
+                .build()
+
         // Create Retrofit
         val retrofit = Retrofit.Builder()
                 .baseUrl("https://n3ase4t7k2.execute-api.ap-northeast-2.amazonaws.com")
+                .client(okHttpClient)
                 .build()
 
         // Create Service
@@ -269,6 +273,8 @@ class ChatActivity : AppCompatActivity() {
         val jsonObject = JSONObject()
         jsonObject.put("session_id", "test")
         jsonObject.put("message", message)
+        jsonObject.put("latitude", "37.55634362962125")
+        jsonObject.put("longitude", "127.07976165234159")
 
         val jsonObjectString = jsonObject.toString()
         val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
@@ -296,13 +302,15 @@ class ChatActivity : AppCompatActivity() {
                     )
 
                     val result = gson.fromJson(prettyJson, MessageData::class.java)
-
                     Log.d("Result :", result.message)
-
                     resultMsg = result.message
-                    lat = result.lat
-                    lng = result.lng
-                    tel = result.tel
+                    if (result.hospital_info != null) {
+                        result.hospital_info.tel_num
+                        lat = result.hospital_info.latitude
+                        lng = result.hospital_info.longitude
+                        tel = result.hospital_info.tel_num
+                    }
+
                 } else {
                     Log.e("RETROFIT_ERROR", response.code().toString())
                     resultMsg = "ERR"
@@ -350,12 +358,12 @@ class ChatActivity : AppCompatActivity() {
         //런타임 퍼미션 처리
         // 1. 위치 퍼미션을 가지고 있는지 체크합니다.
         val hasFineLocationPermission = ContextCompat.checkSelfPermission(
-            this@ChatActivity,
-            Manifest.permission.ACCESS_FINE_LOCATION
+                this@ChatActivity,
+                Manifest.permission.ACCESS_FINE_LOCATION
         )
         val hasCoarseLocationPermission = ContextCompat.checkSelfPermission(
-            this@ChatActivity,
-            Manifest.permission.ACCESS_COARSE_LOCATION
+                this@ChatActivity,
+                Manifest.permission.ACCESS_COARSE_LOCATION
         )
         if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED && hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
             // 2. 이미 퍼미션을 가지고 있다면
@@ -387,8 +395,8 @@ class ChatActivity : AppCompatActivity() {
             startActivityForResult(callGPSSettingIntent, GPS_ENABLE_REQUEST_CODE)
         })
         builder.setNegativeButton(
-            "취소",
-            DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                "취소",
+                DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
         builder.create().show()
     }
 
