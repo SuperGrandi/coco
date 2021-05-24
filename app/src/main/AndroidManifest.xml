@@ -27,7 +27,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Coco">
         <activity
-            android:name=".main_Activity"
+            android:name=".ChatActivity"
             android:configChanges="screenSize|orientation"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -35,18 +35,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity
-            android:name=".lockscreen.setting_Activity"
-            android:configChanges="screenSize|orientation"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>-->
-        <activity
-            android:name=".ChatActivity"
-            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".lock_Activity" />
         <activity
