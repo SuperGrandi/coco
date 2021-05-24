@@ -119,12 +119,13 @@ class ChatActivity : AppCompatActivity() {
 
                 addMessage(content, "user", parentContext)
 
-
                 val msgWait = CoroutineScope(Dispatchers.IO).launch {
                     responseMsg = sendMessage(content)
 
                     addMessage(responseMsg, "coco", parentContext)
                 }
+
+                sendText.setText("")
             }
         }
         val btnSetting = findViewById<Button>(R.id.btnSetting)
@@ -148,7 +149,11 @@ class ChatActivity : AppCompatActivity() {
             if (type == "coco") {
                 ttsSpeak(message)
             }
+
+            listView.setSelection(adapter.count - 1);
+
         }
+
     }
 
     // 음성인식 결과 처리하기
