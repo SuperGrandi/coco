@@ -18,6 +18,7 @@ import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.coco.R
+import com.example.coco.lock_Activity
 import com.example.coco.lockscreen.service.GpsTracker
 import kotlinx.android.synthetic.main.view_unlock.view.*
 import java.util.*

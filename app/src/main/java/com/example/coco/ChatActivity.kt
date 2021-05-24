@@ -48,10 +48,10 @@ class ChatActivity : AppCompatActivity() {
         }
 
         // Chat 관련 코드
-        val sendBtn = findViewById<ImageButton>(R.id.sendButton)
-        val sendText = findViewById<EditText>(R.id.sendText)
+        val sendBtn = findViewById<ImageButton>(R.id.btnSend)
+        val sendText = findViewById<EditText>(R.id.etMSG)
 
-        listView = findViewById<ListView>(R.id.listView)
+        listView = findViewById<ListView>(R.id.lvChat)
 
         items.add(ListViewItem("배가 아파", "user", "10:00"))
         items.add(ListViewItem("답변", "coco", "10:01"))
@@ -74,6 +74,7 @@ class ChatActivity : AppCompatActivity() {
                 items.add(ListViewItem(content + "에 대한 응답", "coco", formatted))
                 adapter = ListViewAdapter(items)
                 listView.adapter = adapter
+                listView.setSelection(adapter.count - 1)
             }
         }
     }

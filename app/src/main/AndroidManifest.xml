@@ -46,7 +46,7 @@
         </activity>-->
         <activity
             android:name=".ChatActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".lock_Activity" />
         <activity
@@ -56,9 +56,6 @@
         <activity
             android:name=".lockscreen.setting_Activity"/>
 
-        <service
-            android:name=".MyNavigationService"
-            android:foregroundServiceType="location" />
         <service
             android:name=".lockscreen.service.SensorService"
             android:enabled="true"

@@ -3,29 +3,126 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".ChatActivity">
 
-    <com.google.android.material.navigation.NavigationView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/coco"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/splitView">
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:hapticFeedbackEnabled="false"
+            android:text="코코"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@+id/title"/>
+        <Button
+            android:id="@id/btnSetting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            android:text="설정"/>
+        </androidx.appcompat.widget.Toolbar>
+
+    <View
+        android:id="@+id/splitView"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintBottom_toTopOf="@id/lvChat"/>
+
+    <ListView
+        android:id="@+id/lvChat"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/투명"
+        android:divider="@null"
+        app:layout_constraintTop_toBottomOf="@id/splitView"
+        app:layout_constraintBottom_toTopOf="@id/MSG"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:transcriptMode="alwaysScroll"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/MSG"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintTop_toBottomOf="@id/lvChat"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageButton
+            android:id="@+id/speechButton"
+            android:layout_width="49dp"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:background="@drawable/send_btn"
+            app:srcCompat="@android:drawable/presence_audio_online"
+            app:layout_constraintStart_toStartOf="@+id/MSG"
+            app:layout_constraintEnd_toStartOf="@id/etMSG"/>
+        <EditText
+            android:id="@+id/etMSG"
+            android:labelFor="@+id/etMSG"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toStartOf="@id/btnSend"
+            app:layout_constraintStart_toEndOf="@+id/speechButton"/>
+        <ImageButton
+            android:id="@+id/btnSend"
+            android:layout_width="49dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/send_btn"
+            app:srcCompat="@android:drawable/ic_media_play"
+            app:layout_constraintStart_toEndOf="@id/etMSG"
+            app:layout_constraintEnd_toEndOf="@id/MSG"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <!--<com.google.android.material.navigation.NavigationView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="21dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:background="#4359E7"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme">
 
-                <TextView
+            <TextView
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -35,75 +132,86 @@
                     android:textColor="#FFFFFF"
                     android:textSize="18sp"
                     android:textStyle="bold" />
-
             </androidx.appcompat.widget.Toolbar>
-
-            <ListView
-                android:id="@+id/listView"
-                android:layout_width="match_parent"
-                android:layout_height="373dp"
-                android:stackFromBottom="true"
-                android:transcriptMode="alwaysScroll"
-                android:divider="@null"
-                android:dividerHeight="0dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
-                android:gravity="bottom"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="vertical">
+
+                <ListView
+                    android:id="@+id/listView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:stackFromBottom="true"
+                    android:transcriptMode="alwaysScroll" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/chat_bg"
-                    android:orientation="horizontal">
-
-                    <ImageButton
-                        android:id="@+id/speechButton"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/send_btn"
-                        app:srcCompat="@android:drawable/presence_audio_online" />
-
-                    <EditText
-                        android:id="@+id/sendText"
-                        android:layout_width="277dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="7dp"
-                        android:layout_marginLeft="7dp"
-                        android:layout_marginEnd="7dp"
-                        android:layout_marginRight="7dp"
-                        android:layout_weight="10"
-                        android:background="@null"
-                        android:ems="10"
-                        android:inputType="text" />
-                </LinearLayout>
-
-                <ImageButton
-                    android:id="@+id/sendButton"
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/send_btn"
-                    app:srcCompat="@android:drawable/ic_media_play" />
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:orientation="horizontal">
 
+                    <LinearLayout
+                        android:layout_width="300dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/chat_bg"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/speechButton"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/send_btn"
+                            app:srcCompat="@android:drawable/presence_audio_online" />
+
+                        <EditText
+                            android:id="@+id/sendText"
+                            android:layout_width="277dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="7dp"
+                            android:layout_marginLeft="7dp"
+                            android:layout_marginEnd="7dp"
+                            android:layout_marginRight="7dp"
+                            android:layout_weight="10"
+                            android:background="@null"
+                            android:ems="10"
+                            android:inputType="text" />
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/sendButton"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/send_btn"
+                        app:srcCompat="@android:drawable/ic_media_play" />
+
+                </LinearLayout>
             </LinearLayout>
+
 
         </LinearLayout>
 
-    </com.google.android.material.navigation.NavigationView>
+    </com.google.android.material.navigation.NavigationView>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
