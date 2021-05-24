@@ -115,14 +115,14 @@ class ChatActivity : AppCompatActivity() {
                 val formatted = current.format(formatter)
                 var parentContext = this
 
-                var responseMsg = ""
+                var responseDatas: Array<String?>
 
-                addMessage(content, "user", parentContext)
+                addMessage(arrayOf(content), "user", parentContext)
 
                 val msgWait = CoroutineScope(Dispatchers.IO).launch {
-                    responseMsg = sendMessage(content)
+                    responseDatas = sendMessage(content)
 
-                    addMessage(responseMsg, "coco", parentContext)
+                    addMessage(responseDatas, "coco", parentContext)
                 }
 
                 sendText.setText("")
@@ -136,13 +136,20 @@ class ChatActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun addMessage(message:String, type:String, context: Context) {
+    private fun addMessage(datas:Array<String?>, type:String, context: Context) {
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("HH:mm")
         val formatted = current.format(formatter)
 
+        var message = datas[0]
+
         runOnUiThread {
-            items.add(ListViewItem(message, type, formatted))
+            if (datas.size > 1) {
+                items.add(ListViewItem(message, type, formatted, datas[1], datas[2], datas[3]))
+            } else {
+                items.add(ListViewItem(message, type, formatted))
+            }
+
             adapter = ListViewAdapter(context, items)
             listView.adapter = adapter
 
@@ -169,11 +176,21 @@ class ChatActivity : AppCompatActivity() {
                 val current = LocalDateTime.now()
                 val formatter = DateTimeFormatter.ofPattern("HH:mm")
                 val formatted = current.format(formatter)
+                var parentContext = this
 
-                items.add(ListViewItem(result, "user", formatted))
-                items.add(ListViewItem(result + "에 대한 응답", "coco", formatted))
-                adapter = ListViewAdapter(this, items)
-                listView.adapter = adapter
+                var responseDatas: Array<String?>
+
+                addMessage(arrayOf(result), "user", parentContext)
+
+                val msgWait = CoroutineScope(Dispatchers.IO).launch {
+                    responseDatas = sendMessage(result)
+
+                    addMessage(responseDatas, "coco", parentContext)
+                }
+
+                val sendText = findViewById<EditText>(R.id.etMSG)
+
+                sendText.setText("")
             }
         }
         when (requestCode) {
@@ -227,12 +244,15 @@ class ChatActivity : AppCompatActivity() {
 
     // TTS 호출
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    private fun ttsSpeak(strTTS: String) {
+    private fun ttsSpeak(strTTS: String?):Boolean {
+        if (strTTS == null)
+            return false
         tts?.speak(strTTS, TextToSpeech.QUEUE_ADD, null, null)
+        return true
     }
 
     // 메세지 전송
-    private suspend fun sendMessage(message: String):String {
+    private suspend fun sendMessage(message: String): Array<String?> {
 
         // Create Retrofit
         val retrofit = Retrofit.Builder()
@@ -251,6 +271,9 @@ class ChatActivity : AppCompatActivity() {
         val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
 
         var resultMsg:String = ""
+        var lat:String? = null
+        var lng:String? = null
+        var tel:String? = null
 
        val netScope = CoroutineScope(Dispatchers.IO).launch {
             // Do the POST request and get response
@@ -274,6 +297,9 @@ class ChatActivity : AppCompatActivity() {
                     Log.d("Result :", result.message)
 
                     resultMsg = result.message
+                    lat = result.lat
+                    lng = result.lng
+                    tel = result.tel
                 } else {
                     Log.e("RETROFIT_ERROR", response.code().toString())
                     resultMsg = "ERR"
@@ -287,7 +313,7 @@ class ChatActivity : AppCompatActivity() {
 
         netScope.cancel()
 
-        return resultMsg
+        return arrayOf(resultMsg, lat, lng, tel)
     }
 
     override fun onRequestPermissionsResult(permsRequestCode: Int, permissions: Array<String?>, grandResults: IntArray) {
