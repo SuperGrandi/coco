@@ -71,10 +71,8 @@ class ChatActivity : AppCompatActivity() {
         checkRunTimePermission()
 
         //start service
-        var intent = Intent(applicationContext, SensorService::class.java)
-        startService(intent)
 
-        intent = Intent(applicationContext, ScreenService::class.java)
+        var intent = Intent(applicationContext, ScreenService::class.java)
         startService(intent)
 
         // STT 관련 코드
@@ -330,7 +328,8 @@ class ChatActivity : AppCompatActivity() {
                 }
             }
             if (check_result) {
-
+                var intent = Intent(applicationContext, SensorService::class.java)
+                startService(intent)
             } else {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])
                     || ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[1])
@@ -357,6 +356,9 @@ class ChatActivity : AppCompatActivity() {
             this@ChatActivity,
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
+        val hasSENDSMSPermission = ContextCompat.checkSelfPermission(this@ChatActivity, Manifest.permission.SEND_SMS)
+        val hasRECORDPermission = ContextCompat.checkSelfPermission(this@ChatActivity, Manifest.permission.RECORD_AUDIO)
+
         if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED && hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
             // 2. 이미 퍼미션을 가지고 있다면
             // ( 안드로이드 6.0 이하 버전은 런타임 퍼미션이 필요없기 때문에 이미 허용된 걸로 인식합니다.)

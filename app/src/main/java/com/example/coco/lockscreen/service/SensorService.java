@@ -81,12 +81,12 @@ public class SensorService extends Service implements SensorEventListener, Locat
 
     private GpsTracker gpsTracker;
 
-
     private Runnable doPeriodicTask = new Runnable() {
         public void run() {
             sentRecently = 'N';
         }
     };
+
 
     public SensorService() {
 
