@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.content.ContextCompat.startActivity
+
 
 class ListViewAdapter(val context: Context, private val items: MutableList<ListViewItem>): BaseAdapter(), ListAdapter {
     private lateinit var mContext:Context
@@ -33,23 +35,26 @@ class ListViewAdapter(val context: Context, private val items: MutableList<ListV
             var map_img = convertView!!.findViewById<ImageView>(R.id.map_image)
 
             // 전화하기 버튼 출력
-            if (item.content.length < 25) {
-                call_btn.setVisibility(View.GONE)
-            } else {
+            if (item.tel != null) {
                 call_btn.setOnClickListener {
-                    Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + item.tel))
+                    context.startActivity(intent)
                 }
+            } else {
+                call_btn.setVisibility(View.GONE)
             }
 
-            if (item.content.indexOf("지도") == -1) {
-                map_img.setVisibility(View.GONE)
-            } else {
+            // 지도 출력
+            if (item.lat != null && item.lng != null) {
                 map_img.setOnClickListener {
-                    val mapIntentUri = Uri.parse("google.navigation:q=37.550368,127.073875")
+                    val mapIntentUri = Uri.parse("google.navigation:q=" + item.lat + "," + item.lng)
                     val mapIntent = Intent(Intent.ACTION_VIEW, mapIntentUri)
                     mapIntent.setPackage("com.google.android.apps.maps")
                     context.startActivity(mapIntent)
                 }
+            } else {
+                map_img.setVisibility(View.GONE)
             }
 
         }
