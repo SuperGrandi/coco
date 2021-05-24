@@ -45,8 +45,7 @@ class ListViewAdapter(val context: Context, private val items: MutableList<ListV
                 map_img.setVisibility(View.GONE)
             } else {
                 map_img.setOnClickListener {
-                    val mapIntentUri = Uri.parse("geo:37.550368,127.073875")
-                    //val mapIntentUri = Uri.parse("\"http://maps.google.com/maps?q=37.550368,127.073875(sejong)&z=15")
+                    val mapIntentUri = Uri.parse("google.navigation:q=37.550368,127.073875")
                     val mapIntent = Intent(Intent.ACTION_VIEW, mapIntentUri)
                     mapIntent.setPackage("com.google.android.apps.maps")
                     context.startActivity(mapIntent)
