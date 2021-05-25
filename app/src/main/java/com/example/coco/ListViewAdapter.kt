@@ -50,7 +50,7 @@ class ListViewAdapter(val context: Context, private val items: MutableList<ListV
             // 지도 출력
             if (item.lat != null && item.lng != null) {
                 // 지도 이미지 출력
-                val imgUrl = "https://maps.googleapis.com/maps/api/staticmap?center="+item.lat+","+item.lng+"&zoom=16&scale=1&size=600x300&maptype=roadmap&key=AIzaSyBbKJZdXNaZF9QddLZzwtnIZ9_7DDOhDkI&format=png&visual_refresh=true"
+                val imgUrl = "https://maps.googleapis.com/maps/api/staticmap?center="+item.lat+","+item.lng+"&zoom=17&scale=1&size=600x300&maptype=roadmap&markers=color:red|label:H|"+item.lat+","+item.lng+"&key=AIzaSyBbKJZdXNaZF9QddLZzwtnIZ9_7DDOhDkI&format=png&visual_refresh=true"
 
                 Picasso.get().load(imgUrl).into(map_img)
 

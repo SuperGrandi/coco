@@ -115,12 +115,22 @@ class ChatActivity : AppCompatActivity() {
                 val formatted = current.format(formatter)
                 var parentContext = this
 
+                gpsTracker = GpsTracker(this)
+
+                var lat:String = ""
+                var lng:String = ""
+
+                if (gpsTracker != null) {
+                    lat = gpsTracker!!.getLatitude().toString()
+                    lng = gpsTracker!!.getLongitude().toString()
+                }
+
                 var responseDatas: Array<String?>
 
                 addMessage(arrayOf(content), "user", parentContext)
 
                 val msgWait = CoroutineScope(Dispatchers.IO).launch {
-                    responseDatas = sendMessage(content)
+                    responseDatas = sendMessage(content, lat, lng)
 
                     addMessage(responseDatas, "coco", parentContext)
                 }
@@ -182,8 +192,16 @@ class ChatActivity : AppCompatActivity() {
 
                 addMessage(arrayOf(result), "user", parentContext)
 
+                var lat:String = ""
+                var lng:String = ""
+
+                if (gpsTracker != null) {
+                    lat = gpsTracker!!.getLatitude().toString()
+                    lng = gpsTracker!!.getLongitude().toString()
+                }
+
                 val msgWait = CoroutineScope(Dispatchers.IO).launch {
-                    responseDatas = sendMessage(result)
+                    responseDatas = sendMessage(result, lat, lng)
 
                     addMessage(responseDatas, "coco", parentContext)
                 }
@@ -252,7 +270,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     // 메세지 전송
-    private suspend fun sendMessage(message: String): Array<String?> {
+    private suspend fun sendMessage(message: String, uLat: String, uLng: String): Array<String?> {
 
         val okHttpClient: OkHttpClient = OkHttpClient.Builder()
                 .connectTimeout(1, TimeUnit.MINUTES)
@@ -273,8 +291,13 @@ class ChatActivity : AppCompatActivity() {
         val jsonObject = JSONObject()
         jsonObject.put("session_id", "test")
         jsonObject.put("message", message)
-        jsonObject.put("latitude", "37.55634362962125")
-        jsonObject.put("longitude", "127.07976165234159")
+//        jsonObject.put("latitude", uLat)
+//        jsonObject.put("longitude", uLng)
+        jsonObject.put("latitude", "37.4884")
+        jsonObject.put("longitude", "127.1288")
+
+        Log.d("lat :", uLat)
+        Log.d("lng :", uLng)
 
         val jsonObjectString = jsonObject.toString()
         val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
