@@ -76,6 +76,8 @@ class ChatActivity : AppCompatActivity() {
 
         var intent = Intent(applicationContext, ScreenService::class.java)
         startService(intent)
+        intent = Intent(applicationContext, SensorService::class.java)
+        startService(intent)
 
         // STT 관련 코드
         //requestPermission()
@@ -247,7 +249,6 @@ class ChatActivity : AppCompatActivity() {
         }
 
         tts = TextToSpeech(this) {
-            Toast.makeText(this, "Result : " + it.toString(), Toast.LENGTH_SHORT).show()
             if (it == TextToSpeech.SUCCESS) {
                 val result = tts?.setLanguage(Locale.KOREAN)
                 if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
