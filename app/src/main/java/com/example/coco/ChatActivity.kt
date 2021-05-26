@@ -63,6 +63,11 @@ class ChatActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("HH:mm")
+        val formatted = current.format(formatter)
+
         setContentView(R.layout.activity_chat)
 
         checkRunTimePermission()
@@ -95,9 +100,7 @@ class ChatActivity : AppCompatActivity() {
 
         listView = findViewById<ListView>(R.id.lvChat)
 
-        items.add(ListViewItem("배가 아파", "user", "10:00"))
-        items.add(ListViewItem("답변", "coco", "10:01"))
-        items.add(ListViewItem("응답", "coco", "10:10", "37.55634362962125", "125.07976165234159"))
+        items.add(ListViewItem("코코에게 아픈 부위와 증상을 알려주시면, 정확한 도움을 받을 수 있어요!", "coco", "$formatted"))
 
         adapter = ListViewAdapter(this, items)
         listView.adapter = adapter

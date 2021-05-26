@@ -419,8 +419,6 @@ public class SensorService extends Service implements SensorEventListener, Locat
             double SMV = Math.sqrt(accel[0] * accel[0] + accel[1] * accel[1] + accel[2] * accel[2]);
 
             if (SMV > progressService) {
-                System.out.println(progressService);
-
                 if (sentRecently == 'N') {
                     Log.d("Accelerometer vector:", "" + SMV);
                     degreeFloat = (float) (fusedOrientation[1] * 180 / Math.PI);
