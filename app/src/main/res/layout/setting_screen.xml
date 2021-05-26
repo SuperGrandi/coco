@@ -81,6 +81,37 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:text="민감도를 설정 할 수 있습니다. (25~35 사이의 수치가 적당합니다.) 민감도가 높을 수록 넘어짐 감지에 대해 둔감합니다."/>
+            <TextView
+                android:id="@+id/tvSensitive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="" />
+            <SeekBar
+                android:id="@+id/seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
+                android:thumb="@drawable/seek_thumb"
+                android:progressDrawable="@drawable/seekbar"
+                android:saveEnabled="true"
+                android:max="50"
+                android:progress="35"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:text="긴급문자를 발송할 연락처 목록"

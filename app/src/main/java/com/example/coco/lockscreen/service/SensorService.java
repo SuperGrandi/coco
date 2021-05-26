@@ -1,8 +1,10 @@
 package com.example.coco.lockscreen.service;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -17,6 +19,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +31,8 @@ import com.example.coco.DialogActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static java.lang.reflect.Array.getInt;
 
 public class SensorService extends Service implements SensorEventListener, LocationListener{
     double latitude, longitude;
@@ -81,6 +86,10 @@ public class SensorService extends Service implements SensorEventListener, Locat
 
     private GpsTracker gpsTracker;
 
+    private int progressService;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+
     private Runnable doPeriodicTask = new Runnable() {
         public void run() {
             sentRecently = 'N';
@@ -102,8 +111,12 @@ public class SensorService extends Service implements SensorEventListener, Locat
     public void onCreate() {
         super.onCreate();
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        senSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        senSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         gpsTracker = new GpsTracker(SensorService.this);
+        pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        editor = pref.edit();
+
+        progressService = pref.getInt("progressSaved", 35);
     }
 
     @Override
@@ -115,9 +128,16 @@ public class SensorService extends Service implements SensorEventListener, Locat
 
     @Override
     public int onStartCommand(Intent intent, int flag, int startId) {
+        Bundle bundle = intent.getExtras();
+
+        if(bundle != null)
+            progressService = intent.getExtras().getInt("progress");
+
+        editor.putInt("progressSaved", progressService);
+        editor.apply();
+
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -175,6 +195,7 @@ public class SensorService extends Service implements SensorEventListener, Locat
         onTaskRemoved(intent);
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
         if (senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)!=null) {
             initListeners();
             fuseTimer.scheduleAtFixedRate(new calculateFusedOrientationTask(), 1000, TIME_CONSTANT);
@@ -397,7 +418,9 @@ public class SensorService extends Service implements SensorEventListener, Locat
             //**********위험 감지**********
             double SMV = Math.sqrt(accel[0] * accel[0] + accel[1] * accel[1] + accel[2] * accel[2]);
 
-            if (SMV > 35) {
+            if (SMV > progressService) {
+                System.out.println(progressService);
+
                 if (sentRecently == 'N') {
                     Log.d("Accelerometer vector:", "" + SMV);
                     degreeFloat = (float) (fusedOrientation[1] * 180 / Math.PI);
