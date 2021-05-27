@@ -8,6 +8,6 @@ import retrofit2.http.POST
 
 
 public interface MessageService {
-    @POST("/dev/api/sendMessage")
+    @POST("/dev/api/dialogue")
     suspend fun sendMessage(@Body requestBody: RequestBody): Response<ResponseBody>
 }

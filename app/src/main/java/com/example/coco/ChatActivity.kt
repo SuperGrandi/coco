@@ -60,6 +60,9 @@ class ChatActivity : AppCompatActivity() {
     // TTS
     private var tts: TextToSpeech? = null
 
+    // Chat Session
+    private var session_id:Int = 0
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -287,7 +290,7 @@ class ChatActivity : AppCompatActivity() {
 
         // Create JSON using JSONObject
         val jsonObject = JSONObject()
-        jsonObject.put("session_id", "test")
+        jsonObject.put("session_id", session_id)
         jsonObject.put("message", message)
 //        jsonObject.put("latitude", uLat)
 //        jsonObject.put("longitude", uLng)
@@ -324,6 +327,8 @@ class ChatActivity : AppCompatActivity() {
 
                     val result = gson.fromJson(prettyJson, MessageData::class.java)
                     Log.d("Result :", result.message)
+                    Log.d("session_id :", result.session_id.toString())
+                    session_id = result.session_id
                     resultMsg = result.message
                     if (result.hospital_info != null) {
                         result.hospital_info.tel_num
