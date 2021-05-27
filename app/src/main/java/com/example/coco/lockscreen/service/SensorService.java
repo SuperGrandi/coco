@@ -26,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import com.example.coco.ChatActivity;
 import com.example.coco.R;
 import com.example.coco.DialogActivity;
 
@@ -420,7 +421,6 @@ public class SensorService extends Service implements SensorEventListener, Locat
 
             if (SMV > progressService) {
                 System.out.println(progressService);
-
                 if (sentRecently == 'N') {
                     Log.d("Accelerometer vector:", "" + SMV);
                     degreeFloat = (float) (fusedOrientation[1] * 180 / Math.PI);

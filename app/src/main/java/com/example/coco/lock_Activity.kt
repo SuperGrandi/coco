@@ -112,8 +112,9 @@ class lock_Activity : AppCompatActivity() {
         } else if (day_of_week == 6) {
             week = "(금)"
         } else {
+            week = "(토)"
         }
-        week = "(토)"
+
 
         str = month + "월 " + day + "일 " + week
 

@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.hardware.Sensor;
 import android.net.Uri;
@@ -40,6 +41,7 @@ public class setting_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.setting_screen);
 
         pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
