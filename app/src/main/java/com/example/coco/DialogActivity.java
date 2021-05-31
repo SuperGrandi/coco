@@ -24,6 +24,8 @@ import androidx.core.content.ContextCompat;
 
 import com.example.coco.lockscreen.util.SMSDBhelper;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,6 +52,9 @@ public class DialogActivity extends AppCompatActivity {
         handler = new Handler();
         Dialog dialog = new Dialog(context);
 
+        Intent intent = getIntent();
+        String message = intent.getExtras().getString("message");
+
         powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, "WAKELOCK");
 
@@ -59,6 +64,9 @@ public class DialogActivity extends AppCompatActivity {
         dialog.show();
 
         wakeLock.acquire();
+
+        TextView emgMsg = (TextView)dialog.findViewById(R.id.tvEmergency);
+        emgMsg.setText(message);
 
         Button btnOK = (Button) dialog.findViewById(R.id.btnOK);
         Button btnHelp = (Button) dialog.findViewById(R.id.btnHelp);

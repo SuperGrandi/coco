@@ -436,6 +436,7 @@ public class SensorService extends Service implements SensorEventListener, Locat
                         Intent intent = new Intent(SensorService.this, DialogActivity.class);
                         intent.putExtra("lastlat",latitude);
                         intent.putExtra("lastlon",longitude);
+                        intent.putExtra("message","넘어짐 감지");
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }

@@ -24,6 +24,7 @@ import com.example.coco.lockscreen.service.GpsTracker
 import com.example.coco.lockscreen.service.ScreenService
 import com.example.coco.lockscreen.service.SensorService
 import com.example.coco.lockscreen.setting_Activity
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import kotlinx.coroutines.*
@@ -49,10 +50,10 @@ class ChatActivity : AppCompatActivity() {
     //permission
     private val PERMISSIONS_REQUEST_CODE = 100
     private var REQUIRED_PERMISSIONS = arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.SEND_SMS,
-            Manifest.permission.RECORD_AUDIO
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.SEND_SMS,
+        Manifest.permission.RECORD_AUDIO
     )
     private var gpsTracker: GpsTracker? = null
     private val GPS_ENABLE_REQUEST_CODE = 2001
@@ -66,7 +67,7 @@ class ChatActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        onTokenRefresh()
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("HH:mm")
         val formatted = current.format(formatter)
@@ -85,7 +86,10 @@ class ChatActivity : AppCompatActivity() {
         // STT 관련 코드
         //requestPermission()
         intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        intent.putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+        )
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR")
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5)
 
@@ -233,12 +237,12 @@ class ChatActivity : AppCompatActivity() {
     // 마이크 권한 요청하기
     private fun requestPermission() {
         if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.RECORD_AUDIO
-                ) != PackageManager.PERMISSION_GRANTED) {
+                this,
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.RECORD_AUDIO), 0
+                this,
+                arrayOf(Manifest.permission.RECORD_AUDIO), 0
             )
         }
 
@@ -322,11 +326,11 @@ class ChatActivity : AppCompatActivity() {
                     // Convert raw JSON to pretty JSON using GSON library
                     val gson = GsonBuilder().setPrettyPrinting().create()
                     val prettyJson = gson.toJson(
-                            JsonParser.parseString(
+                        JsonParser.parseString(
 
-                                    response.body()
-                                            ?.string()
-                            )
+                            response.body()
+                                ?.string()
+                        )
                     )
 
                     val result = gson.fromJson(prettyJson, MessageData::class.java)
@@ -357,7 +361,11 @@ class ChatActivity : AppCompatActivity() {
         return arrayOf(resultMsg, lat, lng, tel)
     }
 
-    override fun onRequestPermissionsResult(permsRequestCode: Int, permissions: Array<String?>, grandResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        permsRequestCode: Int,
+        permissions: Array<String?>,
+        grandResults: IntArray
+    ) {
         if (permsRequestCode == PERMISSIONS_REQUEST_CODE && grandResults.size == REQUIRED_PERMISSIONS.size) {
             var check_result = true
 
@@ -371,15 +379,35 @@ class ChatActivity : AppCompatActivity() {
                 var intent = Intent(applicationContext, SensorService::class.java)
                 startService(intent)
             } else {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])
-                    || ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[1])
-                    || ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[2])
-                    || ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[3])
+                if (ActivityCompat.shouldShowRequestPermissionRationale(
+                        this,
+                        REQUIRED_PERMISSIONS[0]
+                    )
+                    || ActivityCompat.shouldShowRequestPermissionRationale(
+                        this,
+                        REQUIRED_PERMISSIONS[1]
+                    )
+                    || ActivityCompat.shouldShowRequestPermissionRationale(
+                        this,
+                        REQUIRED_PERMISSIONS[2]
+                    )
+                    || ActivityCompat.shouldShowRequestPermissionRationale(
+                        this,
+                        REQUIRED_PERMISSIONS[3]
+                    )
                 ) {
-                    Toast.makeText(this@ChatActivity, "퍼미션이 거부되었습니다. 앱을 다시 실행하여 퍼미션을 허용해주세요.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this@ChatActivity,
+                        "퍼미션이 거부되었습니다. 앱을 다시 실행하여 퍼미션을 허용해주세요.",
+                        Toast.LENGTH_LONG
+                    ).show()
                     finish()
                 } else {
-                    Toast.makeText(this@ChatActivity, "퍼미션이 거부되었습니다. 설정(앱 정보)에서 퍼미션을 허용해야 합니다. ", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this@ChatActivity,
+                        "퍼미션이 거부되었습니다. 설정(앱 정보)에서 퍼미션을 허용해야 합니다. ",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }
@@ -389,15 +417,21 @@ class ChatActivity : AppCompatActivity() {
         //런타임 퍼미션 처리
         // 1. 위치 퍼미션을 가지고 있는지 체크합니다.
         val hasFineLocationPermission = ContextCompat.checkSelfPermission(
-                this@ChatActivity,
-                Manifest.permission.ACCESS_FINE_LOCATION
+            this@ChatActivity,
+            Manifest.permission.ACCESS_FINE_LOCATION
         )
         val hasCoarseLocationPermission = ContextCompat.checkSelfPermission(
-                this@ChatActivity,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+            this@ChatActivity,
+            Manifest.permission.ACCESS_COARSE_LOCATION
         )
-        val hasSENDSMSPermission = ContextCompat.checkSelfPermission(this@ChatActivity, Manifest.permission.SEND_SMS)
-        val hasRECORDPermission = ContextCompat.checkSelfPermission(this@ChatActivity, Manifest.permission.RECORD_AUDIO)
+        val hasSENDSMSPermission = ContextCompat.checkSelfPermission(
+            this@ChatActivity,
+            Manifest.permission.SEND_SMS
+        )
+        val hasRECORDPermission = ContextCompat.checkSelfPermission(
+            this@ChatActivity,
+            Manifest.permission.RECORD_AUDIO
+        )
 
         if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED && hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
             // 2. 이미 퍼미션을 가지고 있다면
@@ -406,15 +440,26 @@ class ChatActivity : AppCompatActivity() {
             // 3.  위치 값을 가져올 수 있음
         } else {  //2. 퍼미션 요청을 허용한 적이 없다면 퍼미션 요청이 필요합니다. 2가지 경우(3-1, 4-1)가 있습니다.
             // 3-1. 사용자가 퍼미션 거부를 한 적이 있는 경우에는
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this@ChatActivity, REQUIRED_PERMISSIONS[0])) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this@ChatActivity,
+                    REQUIRED_PERMISSIONS[0]
+                )) {
                 // 3-2. 요청을 진행하기 전에 사용자가에게 퍼미션이 필요한 이유를 설명해줄 필요가 있습니다.
                 Toast.makeText(this@ChatActivity, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_LONG).show()
                 // 3-3. 사용자게에 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult에서 수신됩니다.
-                ActivityCompat.requestPermissions(this@ChatActivity, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE)
+                ActivityCompat.requestPermissions(
+                    this@ChatActivity,
+                    REQUIRED_PERMISSIONS,
+                    PERMISSIONS_REQUEST_CODE
+                )
             } else {
                 // 4-1. 사용자가 퍼미션 거부를 한 적이 없는 경우에는 퍼미션 요청을 바로 합니다.
                 // 요청 결과는 onRequestPermissionResult에서 수신됩니다.
-                ActivityCompat.requestPermissions(this@ChatActivity, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE)
+                ActivityCompat.requestPermissions(
+                    this@ChatActivity,
+                    REQUIRED_PERMISSIONS,
+                    PERMISSIONS_REQUEST_CODE
+                )
             }
         }
     }
@@ -429,8 +474,8 @@ class ChatActivity : AppCompatActivity() {
             startActivityForResult(callGPSSettingIntent, GPS_ENABLE_REQUEST_CODE)
         })
         builder.setNegativeButton(
-                "취소",
-                DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+            "취소",
+            DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
         builder.create().show()
     }
 
@@ -463,5 +508,11 @@ class ChatActivity : AppCompatActivity() {
         }
         val address: Address = addresses[0]
         return address.getAddressLine(0).toString().toString() + "\n"
+    }
+
+    fun onTokenRefresh() {
+        // Get updated InstanceID token.
+        val refreshedToken = FirebaseInstanceId.getInstance().token
+        Log.d("Token", "Refreshed token: $refreshedToken")
     }
 }
