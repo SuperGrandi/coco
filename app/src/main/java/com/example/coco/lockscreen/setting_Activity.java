@@ -139,20 +139,27 @@ public class setting_Activity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == 1002) {
-            Cursor cursor = getContentResolver().query(data.getData(),
-                    new String[] {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER},
-                    null, null, null);
+            Cursor cursor = null;
+            try {
+                cursor = getContentResolver().query(data.getData(),
+                        new String[] {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER},
+                        null, null, null);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
 
-            cursor.moveToFirst();
-            String receiveName = cursor.getString(0);
-            String receivePhone = cursor.getString(1);
-            cursor.close();
+            if(cursor != null) {
+                cursor.moveToFirst();
+                String receiveName = cursor.getString(0);
+                String receivePhone = cursor.getString(1);
+                cursor.close();
 
-            final SMSDBhelper smsdBhelper = new SMSDBhelper(setting_Activity.this);
-            smsdBhelper.open();
-            smsdBhelper.addNewContact("이름 : " + receiveName + ", 전화번호 : " + receivePhone);
-            smsdBhelper.close();
-            onUpdateNumberList();
+                final SMSDBhelper smsdBhelper = new SMSDBhelper(setting_Activity.this);
+                smsdBhelper.open();
+                smsdBhelper.addNewContact("이름 : " + receiveName + ", 전화번호 : " + receivePhone);
+                smsdBhelper.close();
+                onUpdateNumberList();
+            }
         }
     }
 

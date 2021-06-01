@@ -129,7 +129,14 @@ public class SensorService extends Service implements SensorEventListener, Locat
 
     @Override
     public int onStartCommand(Intent intent, int flag, int startId) {
-        Bundle bundle = intent.getExtras();
+        Bundle bundle = null;
+
+        try {
+            bundle = intent.getExtras();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
 
         if(bundle != null)
             progressService = intent.getExtras().getInt("progress");

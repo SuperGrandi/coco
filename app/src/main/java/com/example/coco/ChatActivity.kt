@@ -300,7 +300,6 @@ class ChatActivity : AppCompatActivity() {
         val jsonObject = JSONObject()
         jsonObject.put("session_id", session_id)
         jsonObject.put("message", message)
-//        jsonObject.put("latitude", uLat)
         jsonObject.put("latitude", uLat)
         jsonObject.put("longitude", uLng)
         /*jsonObject.put("latitude", "37.4884")

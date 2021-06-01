@@ -159,7 +159,7 @@ class ButtonUnLock : RelativeLayout {
                         try {
                             val sms = SmsManager.getDefault()
                             sms.sendTextMessage(phoneNum, null, textMsg, null, null)
-                            Toast.makeText(context, "전송완료", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, "코코에 저장된 연락처로 문자전송 완료!", Toast.LENGTH_LONG).show()
                         } catch (e: java.lang.Exception) {
                             e.printStackTrace()
                         }

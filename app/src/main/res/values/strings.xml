@@ -13,6 +13,6 @@
     <string name="not_supprot_acc">이 단말기는 가속도계 센서를 지원하지 않습니다.</string>
     <string name="permission_error_app_location">앱의 권한 설정에서 위치 권한을 켜주세요.</string>
     <string name="accident">사고 발생:</string>
-    <string name="send_message">메세지 전송을 완료했습니다.</string>
+    <string name="send_message">코코에 저장된 연락처로 문자전송 완료!</string>
 
 </resources>
