@@ -23,6 +23,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.coco.ChatActivity;
 import com.example.coco.R;
 import com.example.coco.lockscreen.service.SensorService;
 import com.example.coco.lockscreen.util.SMSDBhelper;
@@ -49,6 +50,8 @@ public class setting_Activity extends AppCompatActivity {
 
         Button btnAdd = (Button)findViewById(R.id.btnAdd);
         Button btnDelete = (Button)findViewById(R.id.btnDelete);
+        Button btnBack = (Button)findViewById(R.id.btnBack);
+
         listView = findViewById(R.id.lvPhoneNum);
         SeekBar seekbar = findViewById(R.id.seekbar);
         TextView tvSensitive = findViewById(R.id.tvSensitive);
@@ -57,6 +60,13 @@ public class setting_Activity extends AppCompatActivity {
 
         seekbar.setProgress(progress);
         tvSensitive.setText(String.valueOf(seekbar.getProgress()));
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override

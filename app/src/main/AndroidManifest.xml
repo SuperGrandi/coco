@@ -43,7 +43,8 @@
             android:theme="@style/Base.Theme.AppCompat.Dialog" />
         <activity
             android:name=".lockscreen.setting_Activity"
-            android:screenOrientation="portrait"/>
+            android:parentActivityName=".ChatActivity"
+            android:screenOrientation="portrait" />
         <service
             android:name=".lockscreen.service.SensorService"
             android:enabled="true"
