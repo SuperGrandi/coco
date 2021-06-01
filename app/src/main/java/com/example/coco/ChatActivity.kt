@@ -202,12 +202,14 @@ class ChatActivity : AppCompatActivity() {
 
                 addMessage(arrayOf(result), "user", parentContext)
 
+                gpsTracker = GpsTracker(this)
+
                 var lat:String = ""
                 var lng:String = ""
 
                 if (gpsTracker != null) {
-                    lat = gpsTracker!!.getLatitude().toString()
-                    lng = gpsTracker!!.getLongitude().toString()
+                    lat = gpsTracker!!.latitude.toString()
+                    lng = gpsTracker!!.longitude.toString()
                 }
 
                 val msgWait = CoroutineScope(Dispatchers.IO).launch {

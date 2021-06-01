@@ -1,20 +1,22 @@
 package com.example.coco
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat.startActivity
+import com.example.coco.lockscreen.service.SensorService
 import com.squareup.picasso.Picasso
+import org.json.JSONObject
 
 
 class ListViewAdapter(val context: Context, private val items: MutableList<ListViewItem>): BaseAdapter(), ListAdapter {
     private lateinit var mContext:Context
-
     override fun getCount(): Int = items.size
     override fun getItem(position: Int): ListViewItem = items[position]
     override fun getItemId(position: Int): Long = position.toLong()
@@ -23,12 +25,38 @@ class ListViewAdapter(val context: Context, private val items: MutableList<ListV
         var chat_content = view;
         var chat_timestamp = view;
         val item: ListViewItem = items[position]
+        var YesOrNo = ""
+
+        if(item.content!!.length > 6)
+            YesOrNo = item.content!!.substring(item.content.length - 6, item.content.length)
+
+        Log.d("test", YesOrNo)
 
         if (item.type == "user") {
             convertView = LayoutInflater.from(parent?.context).inflate(R.layout.user_chat_item, parent, false)
             chat_content = convertView!!.findViewById<TextView>(R.id.user_chat_content)
             chat_timestamp = convertView!!.findViewById<TextView>(R.id.user_chat_timestamp)
-        } else {
+        }
+        else if(YesOrNo == "있으신가요?") {
+            convertView = LayoutInflater.from(parent?.context).inflate(R.layout.coco_chat_yesorno, parent, false)
+            chat_content = convertView!!.findViewById<TextView>(R.id.yesornoChat)
+            chat_timestamp = convertView!!.findViewById<TextView>(R.id.yesorno_chat_timestamp)
+
+            var btnYes = convertView!!.findViewById<Button>(R.id.btnYes)
+            var btnNo = convertView!!.findViewById<Button>(R.id.btnNo)
+
+            btnYes.setOnClickListener {
+
+
+
+            }
+
+            btnNo.setOnClickListener {
+
+            }
+
+        }
+        else {
             convertView = LayoutInflater.from(parent?.context).inflate(R.layout.coco_chat_item, parent, false)
             chat_content = convertView!!.findViewById<TextView>(R.id.coco_chat_content)
             chat_timestamp = convertView!!.findViewById<TextView>(R.id.coco_chat_timestamp)
