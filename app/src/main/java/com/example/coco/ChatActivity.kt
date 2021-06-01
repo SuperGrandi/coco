@@ -301,9 +301,10 @@ class ChatActivity : AppCompatActivity() {
         jsonObject.put("session_id", session_id)
         jsonObject.put("message", message)
 //        jsonObject.put("latitude", uLat)
-//        jsonObject.put("longitude", uLng)
-        jsonObject.put("latitude", "37.4884")
-        jsonObject.put("longitude", "127.1288")
+        jsonObject.put("latitude", uLat)
+        jsonObject.put("longitude", uLng)
+        /*jsonObject.put("latitude", "37.4884")
+        jsonObject.put("longitude", "127.1288")*/
 
         Log.d("lat :", uLat)
         Log.d("lng :", uLng)
