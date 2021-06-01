@@ -11,12 +11,15 @@ import android.widget.*
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat.startActivity
 import com.example.coco.lockscreen.service.SensorService
+import com.example.coco.lockscreen.util.OnItemClick
 import com.squareup.picasso.Picasso
 import org.json.JSONObject
 
 
-class ListViewAdapter(val context: Context, private val items: MutableList<ListViewItem>): BaseAdapter(), ListAdapter {
+class ListViewAdapter(val context: Context, private val items: MutableList<ListViewItem>, var listener: OnItemClick): BaseAdapter(), ListAdapter {
     private lateinit var mContext:Context
+    private lateinit var mCallback: OnItemClick
+
     override fun getCount(): Int = items.size
     override fun getItem(position: Int): ListViewItem = items[position]
     override fun getItemId(position: Int): Long = position.toLong()
@@ -45,14 +48,14 @@ class ListViewAdapter(val context: Context, private val items: MutableList<ListV
             var btnYes = convertView!!.findViewById<Button>(R.id.btnYes)
             var btnNo = convertView!!.findViewById<Button>(R.id.btnNo)
 
+            mCallback = listener
+
             btnYes.setOnClickListener {
-
-
-
+                mCallback.onClick("예")
             }
 
             btnNo.setOnClickListener {
-
+                mCallback.onClick("아니요")
             }
 
         }
@@ -102,4 +105,6 @@ class ListViewAdapter(val context: Context, private val items: MutableList<ListV
     fun EfficientAdapter(c: Context) {
         mContext = c
     }
+
+
 }
